@@ -12,8 +12,27 @@ mysql:
           '--default-time-zone=+8:00'
   ]
   volumes:
-    - "./dbdata:/var/lib/mysql"
+    - "./dbdata/master:/var/lib/mysql"
     - "./config/config/my.cnf:/etc/my.cnf"
     - "./config/init:/docker-entrypoint-initdb.d/"
   ports:
     - "33060:3306"
+
+mysql:
+  environment:
+    MYSQL_ROOT_PASSWORD: "joyrry0755"
+    MYSQL_USER: "joyrry"
+    MYSQL_PASS: "joyrry0755"
+  image: "docker.io/mysql:latest"
+  restart: always
+  command: [
+          '--default-authentication-plugin=mysql_native_password',
+          '--character-set-server=utf8mb4',
+          '--collation-server=utf8mb4_unicode_ci',
+          '--default-time-zone=+8:00'
+  ]
+  volumes:
+    - "./dbdata/slave:/var/lib/mysql"
+    - "./config/config/my.cnf:/etc/my.cnf"
+  ports:
+    - "33061:3306"
